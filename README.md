@@ -1,6 +1,6 @@
-# Installation du Projet Jenkins et GitLab
+# Installation Jenkins, GitLab et Wordpress à travers Ansible
 
-Ce guide vous guidera à travers les étapes nécessaires pour installer et configurer les environnements Jenkins, GitLab et Wordpress en utilisant Vagrant et Ansible.
+Ce guide vous permet à travers les étapes suivants d'installer et configurer les environnements Jenkins, GitLab et Wordpress en utilisant Vagrant et Ansible.
 
 ## Prérequis
 
