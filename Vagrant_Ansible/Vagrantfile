@@ -32,16 +32,5 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 end
-  #chmod 755 /vagrant
-  #chmod 644 /chemin/vers/Inventory/hosts.ini
-  #export ANSIBLE_CONFIG=/vagrant/ansible.cfg
-  #ansible-inventory --list -i /vagrant/Inventory/hosts.ini
-  #ansible-playbook vagrant_playbook.yml
-  #ansible-config dump
-  #chmod 600 /home/vagrant/private_keys/gitlab_private_key
-  #echo "keys/" >> /vagrant/ansible_project/.gitignore
-  #ansible-playbook -i /vagrant/Inventory/hosts.ini /vagrant/Playbooks/playbook_jenkins.yml -vvv -c /vagrant/ansible.cfg
-  #ssh-keygen -R 192.168.33.11
-  #9a74768d9d2c432eb51b4f392057b85d
-  #ansible --version
+
 
