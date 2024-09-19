@@ -1,0 +1,39 @@
+---
+- name: Installer et configurer GitLab sur Ubuntu 22
+  hosts: gitlab
+  become: yes
+  tasks:
+    - name: Mettre à jour les listes de paquets
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Installer les dépendances nécessaires
+      apt:
+        name:
+          - curl
+          - openssh-server
+          - ca-certificates
+        state: present
+
+    - name: Télécharger et exécuter le script d'installation du dépôt GitLab
+      shell: curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | bash
+
+    - name: Installer GitLab CE
+      apt:
+        name: gitlab-ce
+        state: present
+      environment:
+        EXTERNAL_URL: "http://{{ ansible_default_ipv4.address }}"
+
+    - name: Afficher le mot de passe initial de l'administrateur GitLab
+      command: cat /etc/gitlab/initial_root_password
+      register: gitlab_password
+      changed_when: false
+
+    - name: Afficher l'URL de GitLab et le mot de passe initial
+      debug:
+        msg: >
+          GitLab est installé. URL : http://{{ ansible_default_ipv4.address }}:8091
+          Mot de passe initial de l'administrateur : {{ gitlab_password.stdout }}
+

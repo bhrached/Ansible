@@ -1,0 +1,76 @@
+---
+- name: Installer et configurer Jenkins sur Ubuntu 22
+  hosts: jenkins
+  become: yes
+  tasks:
+    - name: Installer ntpdate pour synchroniser l'heure
+      apt:
+        name: ntpdate
+        state: present
+
+    - name: Synchroniser l'heure avec ntp.ubuntu.com
+      command: ntpdate ntp.ubuntu.com
+      ignore_errors: yes
+
+    - name: Mettre à jour les listes de paquets
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        upgrade: dist
+
+    - name: Installer les dépendances nécessaires
+      apt:
+        name:
+          - fontconfig
+          - openjdk-17-jre
+        state: present
+
+    - name: Ajouter la clé du dépôt Jenkins
+      get_url:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        dest: /usr/share/keyrings/jenkins-keyring.asc
+        validate_certs: yes
+
+    - name: Ajouter le dépôt Jenkins
+      apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
+        filename: jenkins
+        state: present
+
+    - name: Mettre à jour les listes de paquets après ajout du dépôt Jenkins
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Installer Jenkins
+      apt:
+        name: jenkins
+        state: present
+
+    - name: Démarrer et activer Jenkins
+      systemd:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Afficher le statut de Jenkins
+      command: systemctl status jenkins
+      register: jenkins_status
+      changed_when: false
+
+    - name: Afficher le mot de passe initial de Jenkins
+      command: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_password
+      changed_when: false
+
+    - name: Afficher le statut de Jenkins
+      debug:
+        msg: "Statut de Jenkins :\n{{ jenkins_status.stdout }}"
+
+    - name: Afficher le mot de passe initial
+      debug:
+        msg: "Mot de passe initial de l'administrateur Jenkins : {{ jenkins_password.stdout }}"
+
+    - name: Afficher l'URL de Jenkins
+      debug:
+        msg: "Jenkins est installé. URL : http://localhost:8081"

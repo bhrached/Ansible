@@ -1,0 +1,32 @@
+Vagrant.configure("2") do |config|
+    # Configuration pour Jenkins
+    config.vm.define "jenkins" do |jenkins|
+      jenkins.vm.box = "bento/ubuntu-22.04"
+      jenkins.vm.network "private_network", ip: "192.168.33.11"
+      jenkins.vm.network "forwarded_port", guest: 8080, host: 8081
+      jenkins.vm.hostname = "jenkins-server"
+    end
+  
+    # Configuration pour GitLab
+    config.vm.define "gitlab" do |gitlab|
+      gitlab.vm.box = "bento/ubuntu-22.04"
+      gitlab.vm.hostname = "gitlab-server"
+      gitlab.vm.network "private_network", ip: "192.168.33.12"
+      gitlab.vm.network "forwarded_port", guest: 80, host: 8090
+      gitlab.vm.network "forwarded_port", guest: 443, host: 8091
+      gitlab.vm.network "forwarded_port", guest: 22, host: 8092
+      gitlab.vm.network "forwarded_port", guest: 8080, host: 8093
+
+    end
+  
+    # Configuration pour WordPress
+    config.vm.define "wordpress" do |wordpress|
+      wordpress.vm.box = "bento/ubuntu-22.04"
+      wordpress.vm.hostname = "wordpress-server"
+      wordpress.vm.network "private_network", ip: "192.168.33.13"
+      wordpress.vm.network "forwarded_port", guest: 80, host: 8082
+    end
+  end
+
+  #vagrant up ansible
+  
