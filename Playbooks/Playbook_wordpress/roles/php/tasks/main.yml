@@ -1,0 +1,18 @@
+---
+- name: Installer les dépendances pour PHP
+  apt:
+    name: software-properties-common
+    state: present
+
+- name: Ajouter le dépôt PHP PPA si nécessaire
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+
+- name: Installer PHP 8.3 et les modules nécessaires
+  apt:
+    name:
+      - php8.3
+      - libapache2-mod-php8.3
+      - php8.3-mysql
+    state: present
