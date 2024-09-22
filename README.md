@@ -27,6 +27,15 @@ Avant de commencer, assurez-vous que vous avez installé les outils suivants sur
 
 Si l'un de ces outils n'est pas installé, vous devez l'installer avant de poursuivre.
 
+## Changelog
+
+### Version 1.1
+- **Décomposition du Playbook WordPress** : Le playbook WordPress a été réorganisé pour améliorer la structure et la maintenabilité. Il est désormais divisé en quatre rôles distincts :
+  - **WordPress** : Rôle principal pour l'installation et la configuration de WordPress.
+  - **Apache** : Rôle pour l'installation et la configuration du serveur web Apache.
+  - **MariaDB** : Rôle dédié à l'installation et à la configuration de MariaDB.
+  - **PHP** : Rôle pour l'installation des modules PHP nécessaires au fonctionnement de WordPress.
+
 Étapes d'installation
 ---------------------
 

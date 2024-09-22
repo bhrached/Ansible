@@ -1,0 +1,10 @@
+---
+- name: Déployer WordPress avec Apache, PHP, et MariaDB
+  hosts: wordpress2
+  become: true
+
+  roles:
+    - apache
+    - php
+    - mariadb
+    - wordpress

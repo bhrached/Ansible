@@ -1,0 +1,19 @@
+---
+- name: Installer Apache
+  apt:
+    name: apache2
+    state: present
+  notify: Redémarrer Apache  # Notifie le handler pour redémarrer Apache
+
+- name: Démarrer et activer Apache
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: Activer le module rewrite d'Apache
+  command: a2enmod rewrite
+  notify: Recharger Apache  # Notifie le handler pour recharger Apache
+
+# Cette tâche n'est pas nécessaire car Apache est déjà redémarré via les handlers
+# Retire-la si elle cause problème ou si elle est redondante.
