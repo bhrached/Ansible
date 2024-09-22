@@ -62,23 +62,23 @@ Une fois les machines virtuelles en cours d'exécution, vous pouvez exécuter le
 
 *   Pour Jenkins :
 
-    ansible-playbook -i inventory/hosts.ini Playbooks/playbook_jenkins.yml
+    ansible-playbook -i Inventory/hosts.ini Playbooks/playbook_jenkins.yml
 
 *   Pour GitLab :
 
-    ansible-playbook -i inventory/hosts.ini Playbooks/playbook_gitlab.yml
+    ansible-playbook -i Inventory/hosts.ini Playbooks/playbook_gitlab.yml
 
 *   Pour WordPress :
 
-    ansible-playbook -i inventory/hosts.ini Playbooks/playbook_wordpress.yml
+    ansible-playbook -i Inventory/hosts.ini Playbooks/playbook_wordpress/site.yml
 
 ### 5\. Accéder aux services
 
 Après l'exécution des playbooks, vous pourrez accéder aux services via les adresses suivantes :
 
-*   **Jenkins** : [http://:8080](http://localhost:8081)
-*   **GitLab** : [http://](http://localhost:8090)
-*   **WordPress** : [http://](http://localhost:8082)
+*   **Jenkins** : [http://localhost:8081](http://localhost:8081)
+*   **GitLab** : [http://localhost:8090](http://localhost:8090)
+*   **WordPress** : [http://localhost:8082](http://localhost:8082)
 
 ### Notes
 
