@@ -1,0 +1,10 @@
+---
+- name: Redémarrer Apache
+  service:
+    name: apache2
+    state: restarted
+
+- name: Recharger Apache
+  service:
+    name: apache2
+    state: reloaded

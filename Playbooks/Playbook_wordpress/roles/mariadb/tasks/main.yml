@@ -1,0 +1,123 @@
+---
+- name: Installer MariaDB
+  apt:
+    name: mariadb-server
+    state: present
+
+- name: Ajouter la configuration dans /etc/mysql/my.cnf
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/my.cnf
+  notify: Redémarrer MariaDB
+
+#- name: Afficher toutes les variables
+#  debug:
+#    var: hostvars[inventory_hostname]
+
+#- name: Afficher uniquement les variables définies
+#  debug:
+#    msg: "{{ item.key }}: {{ item.value }}"
+#  loop: "{{ vars | dict2items }}"
+
+- name: Afficher les variables spécifiques
+  debug:
+    msg: "root_password: {{ root_password }}, db_user: {{ db_user }}, db_password: {{ db_password }}"
+
+- name: Vérifier la valeur de root_password
+  debug:
+    msg: "Le mot de passe root est : {{ root_password }}"
+
+- name: Définir le mot de passe root
+  command: >
+    mysqladmin -u root password '{{ root_password }}'
+  ignore_errors: yes
+
+- name: Supprimer les utilisateurs anonymes
+  command: >
+    mysql -u root -p'{{ root_password }}' -e "DELETE FROM mysql.user WHERE User='';"
+  ignore_errors: yes
+
+- name: Interdire les connexions root à distance
+  command: >
+    mysql -u root -p'{{ root_password }}' -e "DELETE FROM mysql.user WHERE User='root' AND Host='%';"
+  ignore_errors: yes
+
+
+- name: Installer pip
+  apt:
+    name: python3-pip
+    state: present
+  register: pip_install
+  ignore_errors: yes
+
+- name: Vérifier l'installation de pip
+  command: which pip3
+  register: pip_check
+  ignore_errors: yes
+
+- name: Afficher le résultat de la vérification de pip
+  debug:
+    var: pip_check
+
+- name: Installer PyMySQL
+  pip:
+    name: PyMySQL
+    state: present
+    executable: pip3  # Utiliser pip3 explicitement
+
+- name: Vérifier l'installation de PyMySQL
+  command: python3 -c "import pymysql"
+  register: pymysql_check
+  ignore_errors: yes
+
+- name: Afficher le résultat de la vérification de PyMySQL
+  debug:
+    var: pymysql_check
+
+- name: Installer mysql-connector-python
+  pip:
+    name: mysql-connector-python
+    state: present
+    executable: pip3  # Utiliser pip3 explicitement
+
+
+
+    
+- name: Créer un utilisateur MariaDB dédié avec un mot de passe
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    priv: '*.*:ALL'
+    host: localhost
+    state: present
+    login_user: root
+    login_password: "{{ root_password }}"
+  become: true
+
+- name: Créer la base de données WordPress
+  mysql_db:
+    name: "{{ dbw_name }}"
+    state: present
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_password }}"
+  become: true
+
+- name: Accorder tous les privilèges administratifs à l'utilisateur admin
+  mysql_user:
+    name: "{{ db_user }}"
+    host: localhost
+    priv: '*.*:ALL,GRANT'
+    state: present
+    login_user: root
+    login_password: "{{ root_password }}"
+  become: true
+
+- name: Créer un utilisateur WordPress pour MariaDB
+  mysql_user:
+    name: "{{dbw_user}}"
+    password: "{{dbw_password}}"
+    priv: '{{dbw_name}}.*:ALL'
+    state: present
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_password }}"
+  become: true
