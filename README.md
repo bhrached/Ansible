@@ -85,3 +85,33 @@ Après l'exécution des playbooks, vous pourrez accéder aux services via les ad
 Assurez-vous que les ports requis sont ouverts et accessibles depuis votre machine hôte.
 
 Consultez la documentation respective de chaque service pour plus de détails sur la configuration et l'utilisation.
+
+## Utilisation
+
+Commandes importantes pour Ansible
+----------------------------------
+
+*   **Exécuter un playbook Ansible** : `ansible-playbook <nom_du_playbook>.yml`  
+    Exemple : `ansible-playbook site.yml`
+*   **Exécuter un playbook avec un inventaire spécifique** : `ansible-playbook -i <chemin_vers_inventaire> <nom_du_playbook>.yml`  
+    Exemple : `ansible-playbook -i hosts site.yml`
+*   **Tester la connexion à une machine via Ansible** : `ansible <nom_de_la_machine> -m ping`  
+    Exemple : `ansible wordpress -m ping`
+*   **Vérifier la syntaxe d'un playbook** : `ansible-playbook --syntax-check <nom_du_playbook>.yml`
+*   **Exécuter un playbook en mode vérification (dry run)** : `ansible-playbook --check <nom_du_playbook>.yml`
+*   **Lister les tâches à exécuter sans les exécuter** : `ansible-playbook --list-tasks <nom_du_playbook>.yml`
+*   **Afficher les hôtes gérés par Ansible** : `ansible all --list-hosts`
+*   **Exécuter une commande ad-hoc sur une machine** : `ansible <nom_de_la_machine> -a '<commande>'`  
+    Exemple : `ansible wordpress -a 'uptime'`
+*   **Afficher les faits d'une machine** : `ansible <nom_de_la_machine> -m setup`  
+    Exemple : `ansible wordpress -m setup`
+*   **Afficher les groupes d'un inventaire** : `ansible-inventory --graph`
+
+## Contribution
+
+Les contributions sont les bienvenues ! Veuillez forker le dépôt et soumettre une pull request avec vos modifications.
+
+<h2>Auteur</h2>
+<p>Ce projet a été développé par bhrached.</p>
+<h2>Licence</h2>
+<p>Ce projet est sous licence MIT.</p>
