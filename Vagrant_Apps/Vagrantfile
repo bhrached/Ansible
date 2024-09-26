@@ -19,13 +19,13 @@ Vagrant.configure("2") do |config|
       gitlab.vm.network "forwarded_port", guest: 22, host: 8092
       gitlab.vm.network "forwarded_port", guest: 8080, host: 8093
       # Configuration du dossier synchronisé pour /etc/gitlab (configuration)
-      config.vm.synced_folder "../gitlab/config", "/etc/gitlab"
+      gitlab.vm.synced_folder "../gitlab/config", "/etc/gitlab"
 
       # Configuration du dossier synchronisé pour /var/log/gitlab (logs)
-      config.vm.synced_folder "../gitlab/logs", "/var/log/gitlab"
+      gitlab.vm.synced_folder "../gitlab/logs", "/var/log/gitlab"
 
       # Configuration du dossier synchronisé pour /var/opt/gitlab (données persistantes)
-      config.vm.synced_folder "../gitlab/data", "/var/opt/gitlab"
+      gitlab.vm.synced_folder "../gitlab/data", "/var/opt/gitlab"
 
     end
   
