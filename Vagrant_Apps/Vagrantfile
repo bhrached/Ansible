@@ -35,6 +35,10 @@ Vagrant.configure("2") do |config|
       wordpress.vm.hostname = "wordpress-server"
       wordpress.vm.network "private_network", ip: "192.168.33.13"
       wordpress.vm.network "forwarded_port", guest: 80, host: 8082
+      wordpress.vm.synced_folder "../wordpress/html", "/var/www/html"
+      wordpress.vm.synced_folder "../wordpress/config_apache", "/etc/apache2/sites-available"
+  
+      
     end
   end
 
